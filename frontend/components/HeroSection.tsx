@@ -154,6 +154,10 @@ export function HeroSection() {
             </div>
 
             <div className="relative mt-8 aspect-[5/4] overflow-hidden rounded-[1.5rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.2),transparent_32%),linear-gradient(180deg,rgba(3,7,18,0.98),rgba(8,15,33,0.96))]">
+              <div className="pointer-events-none absolute inset-0 opacity-80">
+                <HeroCanvas pointerX={pointerX} pointerY={pointerY} />
+              </div>
+
               <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.08)_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-30" />
               <motion.div animate={{ x: [0, 18, 0], y: [0, -10, 0] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }} className="absolute left-[12%] top-[14%] h-3 w-3 rounded-full bg-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.9)]" />
               <motion.div animate={{ x: [0, -16, 0], y: [0, 12, 0] }} transition={{ duration: 8.5, repeat: Infinity, ease: "easeInOut" }} className="absolute right-[15%] top-[20%] h-2.5 w-2.5 rounded-full bg-orange-300 shadow-[0_0_16px_rgba(251,146,60,0.9)]" />

@@ -18,6 +18,15 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: "Armatrix | Inspection Reimagined",
   description: "Cinematic robotics website built with Next.js, Tailwind CSS, and Framer Motion.",
+  icons: {
+    icon: [
+      {
+        url: "/media/brand/logo-white.svg",
+        type: "image/svg+xml",
+      },
+    ],
+    shortcut: ["/media/brand/logo-white.svg"],
+  },
 };
 
 
