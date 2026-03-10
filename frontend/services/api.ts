@@ -13,7 +13,7 @@ export type TeamMember = {
 
 
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://armatrix-team-page.onrender.com",
+  baseURL: "/api",
   timeout: 10000,
 });
 
