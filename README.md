@@ -58,3 +58,27 @@ Start the backend first, then start the frontend in a separate terminal.
 
 1. `cd backend` and run `uvicorn main:app --reload`
 2. `cd frontend` and run `npm run dev`
+
+## Deployment (recommended)
+
+This repo is easiest to deploy as two services:
+
+### 1) Deploy the frontend (Next.js) on Vercel
+
+- Import the GitHub repo in Vercel.
+- Set **Root Directory** to `frontend`.
+- Add env var:
+	- `NEXT_PUBLIC_API_BASE_URL` = your backend URL (example: `https://armatrix-api.onrender.com`)
+
+### 2) Deploy the backend (FastAPI) on Render/Railway/Fly
+
+- Service root: `backend`
+- Install command: `pip install -r requirements.txt`
+- Start command (example): `uvicorn main:app --host 0.0.0.0 --port $PORT`
+- Add env var:
+	- `CORS_ORIGINS` = comma-separated list of allowed frontend origins
+		- example: `https://your-vercel-app.vercel.app,https://your-domain.com`
+
+Notes:
+- If you set `CORS_ORIGINS=*`, credentials are disabled automatically.
+- After both are deployed, open the frontend URL and verify `/team` loads data.

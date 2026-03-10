@@ -3,6 +3,40 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useId, useRef } from "react";
 
+type YouTubePlayer = {
+  destroy?: () => void;
+  mute: () => void;
+  playVideo: () => void;
+  seekTo: (seconds: number, allowSeekAhead?: boolean) => void;
+};
+
+type YouTubePlayerEvent = {
+  target: YouTubePlayer;
+};
+
+type YouTubeStateChangeEvent = {
+  data: number;
+  target: YouTubePlayer;
+};
+
+type YouTubeWindow = Window & {
+  YT?: {
+    Player?: new (
+      elementId: string,
+      options: {
+        host?: string;
+        videoId: string;
+        playerVars?: Record<string, string | number>;
+        events?: {
+          onReady?: (event: YouTubePlayerEvent) => void;
+          onStateChange?: (event: YouTubeStateChangeEvent) => void;
+        };
+      },
+    ) => YouTubePlayer;
+  };
+  onYouTubeIframeAPIReady?: () => void;
+};
+
 const floatingMedia = [
   {
     src: "/media/product/product-01.jpg",
@@ -38,7 +72,7 @@ export function ScrollMediaBackdrop() {
   const videoId = "sCH2gQIY67E";
   const playerHostId = useId().replace(/:/g, "");
   const playerReadyRef = useRef(false);
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<YouTubePlayer | null>(null);
 
   useEffect(() => {
     if (playerReadyRef.current) {
@@ -46,7 +80,7 @@ export function ScrollMediaBackdrop() {
     }
 
     const mountPlayer = () => {
-      const YT = (window as any).YT;
+      const YT = (window as YouTubeWindow).YT;
       if (!YT?.Player) {
         return;
       }
@@ -73,7 +107,7 @@ export function ScrollMediaBackdrop() {
           origin: window.location.origin,
         },
         events: {
-          onReady: (event: any) => {
+          onReady: (event: YouTubePlayerEvent) => {
             try {
               event.target.mute();
               event.target.playVideo();
@@ -82,7 +116,7 @@ export function ScrollMediaBackdrop() {
               // Ignore autoplay failures (browser policy). The video can still be clicked if needed.
             }
           },
-          onStateChange: (event: any) => {
+          onStateChange: (event: YouTubeStateChangeEvent) => {
             // 0 = ended. Ensure looping even if playlist loop fails.
             if (event?.data === 0) {
               try {
@@ -98,7 +132,7 @@ export function ScrollMediaBackdrop() {
     };
 
     const ensureApi = () => {
-      const w = window as any;
+      const w = window as YouTubeWindow;
       if (w.YT?.Player) {
         mountPlayer();
         return;
