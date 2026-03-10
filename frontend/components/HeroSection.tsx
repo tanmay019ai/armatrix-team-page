@@ -170,7 +170,7 @@ export function HeroSection() {
               <FrameBadge label="Inspection" className="right-[14%] top-[46%]" accent="orange" duration={6.2} reverse />
               <FrameBadge label="Reimagined" className="bottom-[14%] left-[36%]" accent="slate" duration={5.8} />
 
-              <div className="absolute bottom-4 left-4 right-4 grid gap-3 rounded-[1.25rem] border border-white/10 bg-slate-950/50 p-4 backdrop-blur md:grid-cols-3">
+              <div className="absolute bottom-3 left-3 right-3 grid grid-cols-3 gap-2 rounded-[1.25rem] border border-white/10 bg-slate-950/50 p-3 backdrop-blur sm:bottom-4 sm:left-4 sm:right-4 sm:gap-3 sm:p-4">
                 <Stat label="intro mode" value="3D canvas" />
                 <Stat label="word animation" value="Printed glass" />
                 <Stat label="interaction" value="Pointer reactive" />
@@ -209,9 +209,9 @@ type StatProps = {
 
 function Stat({ label, value }: StatProps) {
   return (
-    <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-3">
-      <p className="text-xs uppercase tracking-[0.28em] text-slate-500">{label}</p>
-      <p className="mt-2 text-lg font-semibold text-white">{value}</p>
+    <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-2 sm:p-3">
+      <p className="text-[10px] uppercase tracking-[0.26em] text-slate-500 sm:text-xs sm:tracking-[0.28em]">{label}</p>
+      <p className="mt-1.5 text-sm font-semibold text-white sm:mt-2 sm:text-base md:text-lg">{value}</p>
     </div>
   );
 }
