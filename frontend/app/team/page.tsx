@@ -2,6 +2,9 @@ import { TeamGrid } from "@/components/TeamGrid";
 
 
 export default function TeamPage() {
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://armatrix-team-page.onrender.com";
+  const apiSource = `${apiBaseUrl.replace(/\/$/, "")}/team`;
+
   return (
     <main className="min-h-screen px-6 py-10 md:px-10 md:py-16">
       <section className="mx-auto max-w-7xl">
@@ -26,7 +29,7 @@ export default function TeamPage() {
                     API source
                   </p>
                   <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-200">
-                    http://localhost:8000/team
+                    {apiSource}
                   </p>
                 </div>
                 <div className="rounded-[1.5rem] border border-slate-200/80 bg-white/80 px-5 py-4 dark:border-white/10 dark:bg-white/5">
