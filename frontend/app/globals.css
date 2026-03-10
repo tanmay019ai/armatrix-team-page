@@ -3,16 +3,21 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(21, 94, 117, 0.16), transparent 28%),
-    radial-gradient(circle at right, rgba(217, 119, 6, 0.16), transparent 25%),
-    linear-gradient(180deg, #fefaf2 0%, #fffdf8 48%, #f7efe3 100%);
-  color: #111827;
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.10), transparent 26%),
+    radial-gradient(circle at right, rgba(249, 115, 22, 0.10), transparent 20%),
+    linear-gradient(180deg, #020611 0%, #040b17 46%, #071224 100%);
+  color: #e5eef8;
+  transition: background 200ms ease, color 200ms ease;
 }
 
 a {
@@ -22,4 +27,18 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(14, 165, 233, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background:
+      radial-gradient(circle at top left, rgba(34, 211, 238, 0.14), transparent 28%),
+      radial-gradient(circle at right, rgba(244, 114, 182, 0.14), transparent 22%),
+      linear-gradient(180deg, #020617 0%, #08111f 48%, #0d1726 100%);
+    color: #e5eef8;
+  }
 }

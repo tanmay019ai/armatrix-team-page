@@ -16,8 +16,8 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Armatrix Team Dashboard",
-  description: "Team directory powered by FastAPI and Next.js.",
+  title: "Armatrix | Inspection Reimagined",
+  description: "Cinematic robotics website built with Next.js, Tailwind CSS, and Framer Motion.",
 };
 
 
