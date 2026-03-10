@@ -21,11 +21,11 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/media/brand/logo-white.svg",
+        url: "/media/brand/logo-black.svg",
         type: "image/svg+xml",
       },
     ],
-    shortcut: ["/media/brand/logo-white.svg"],
+    shortcut: ["/media/brand/logo-black.svg"],
   },
 };
 
