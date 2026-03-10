@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useId, useRef } from "react";
 
 const floatingMedia = [
   {
@@ -34,8 +35,104 @@ export function ScrollMediaBackdrop() {
   const videoOpacity = useTransform(scrollY, [0, 420, 2400], [0.72, 0.62, 0]);
   const videoScale = useTransform(scrollY, [0, 2000], [1, 1.06]);
   const gridOpacity = useTransform(scrollY, [0, 2200], [0.8, 0]);
-  const youtubeSrc =
-    "https://www.youtube-nocookie.com/embed/sCH2gQIY67E?autoplay=1&mute=1&controls=0&loop=1&playlist=sCH2gQIY67E&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1";
+  const videoId = "sCH2gQIY67E";
+  const playerHostId = useId().replace(/:/g, "");
+  const playerReadyRef = useRef(false);
+  const playerRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (playerReadyRef.current) {
+      return undefined;
+    }
+
+    const mountPlayer = () => {
+      const YT = (window as any).YT;
+      if (!YT?.Player) {
+        return;
+      }
+
+      if (playerRef.current) {
+        return;
+      }
+
+      playerRef.current = new YT.Player(playerHostId, {
+        host: "https://www.youtube-nocookie.com",
+        videoId,
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          loop: 1,
+          playlist: videoId,
+          playsinline: 1,
+          modestbranding: 1,
+          rel: 0,
+          iv_load_policy: 3,
+          disablekb: 1,
+          fs: 0,
+          // Hint autoplay permission + avoids some embed restrictions.
+          origin: window.location.origin,
+        },
+        events: {
+          onReady: (event: any) => {
+            try {
+              event.target.mute();
+              event.target.playVideo();
+              playerReadyRef.current = true;
+            } catch {
+              // Ignore autoplay failures (browser policy). The video can still be clicked if needed.
+            }
+          },
+          onStateChange: (event: any) => {
+            // 0 = ended. Ensure looping even if playlist loop fails.
+            if (event?.data === 0) {
+              try {
+                event.target.seekTo(0);
+                event.target.playVideo();
+              } catch {
+                // ignore
+              }
+            }
+          },
+        },
+      });
+    };
+
+    const ensureApi = () => {
+      const w = window as any;
+      if (w.YT?.Player) {
+        mountPlayer();
+        return;
+      }
+
+      if (!document.getElementById("yt-iframe-api")) {
+        const tag = document.createElement("script");
+        tag.id = "yt-iframe-api";
+        tag.src = "https://www.youtube.com/iframe_api";
+        tag.async = true;
+        document.head.appendChild(tag);
+      }
+
+      const previous = w.onYouTubeIframeAPIReady;
+      w.onYouTubeIframeAPIReady = () => {
+        if (typeof previous === "function") {
+          previous();
+        }
+        mountPlayer();
+      };
+    };
+
+    ensureApi();
+
+    return () => {
+      try {
+        playerRef.current?.destroy?.();
+      } catch {
+        // ignore
+      }
+      playerRef.current = null;
+      playerReadyRef.current = false;
+    };
+  }, [playerHostId]);
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
@@ -44,13 +141,11 @@ export function ScrollMediaBackdrop() {
         className="absolute inset-0"
         style={{ opacity: videoOpacity, scale: videoScale }}
       >
-        <iframe
-          title="Armatrix background video"
-          src={youtubeSrc}
+        <div
           className="absolute left-1/2 top-1/2 h-[56.25vw] w-[177.78vh] min-h-full min-w-full -translate-x-1/2 -translate-y-1/2"
-          allow="autoplay; encrypted-media; picture-in-picture"
-          referrerPolicy="strict-origin-when-cross-origin"
-        />
+        >
+          <div id={playerHostId} className="h-full w-full" />
+        </div>
       </motion.div>
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.22),transparent_50%),radial-gradient(circle_at_78%_30%,rgba(249,115,22,0.16),transparent_50%),linear-gradient(180deg,rgba(2,6,23,0.18),rgba(2,6,23,0.72)_70%,rgba(2,6,23,0.95))]" />
