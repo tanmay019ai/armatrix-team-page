@@ -71,6 +71,21 @@ This avoids browser-side CORS issues between Vercel and Render.
 	└── package.json
 ```
 
+### Key files
+
+```text
+backend/main.py                      FastAPI app entrypoint and CORS setup
+backend/app/api/routes/team.py      Team REST API routes
+backend/app/data/team_store.py      In-memory team member store
+frontend/app/page.tsx               Main landing page
+frontend/app/team/page.tsx          Team directory page
+frontend/app/api/team/route.ts      Next.js proxy route to backend /team
+frontend/components/HeroSection.tsx Hero section and glass console UI
+frontend/components/TeamGrid.tsx    Team loading, error, grid, and detail panel
+frontend/services/api.ts            Frontend API client used by the team UI
+frontend/app/layout.tsx             Global metadata, fonts, and favicon
+```
+
 ## Features
 
 - Cinematic landing page with motion-driven sections
@@ -80,6 +95,22 @@ This avoids browser-side CORS issues between Vercel and Render.
 - FastAPI CRUD endpoints for team members
 - Next.js server-side proxy for backend team requests
 - Deployable split architecture using Vercel + Render
+
+## Product visuals
+
+These images are part of the repository and are used across the landing page experience.
+
+<p align="center">
+	<img src="frontend/public/media/product/product-01.jpg" alt="Armatrix product visual 01" width="31%" />
+	<img src="frontend/public/media/product/product-03.jpg" alt="Armatrix product visual 03" width="31%" />
+	<img src="frontend/public/media/product/product-05.jpg" alt="Armatrix product visual 05" width="31%" />
+</p>
+
+<p align="center">
+	<img src="frontend/public/media/product/product-02.jpg" alt="Armatrix product visual 02" width="31%" />
+	<img src="frontend/public/media/product/product-04.jpg" alt="Armatrix product visual 04" width="31%" />
+	<img src="frontend/public/media/product/product-07.png" alt="Armatrix product visual 07" width="31%" />
+</p>
 
 ## Backend API
 
@@ -267,6 +298,48 @@ Try a hard refresh or open the deployed site in an incognito window. Browsers of
 - Team data is stored in memory only
 - Image optimization warnings still exist for several `img` tags
 - The backend has no persistent database yet
+
+## Contributing
+
+### Workflow
+
+1. Pull the latest changes from `main`.
+2. Create a branch for your work.
+3. Make focused changes and avoid mixing unrelated fixes.
+4. Run the relevant local checks before pushing.
+5. Open a pull request with a short summary of what changed and how it was tested.
+
+### Recommended local checks
+
+Frontend:
+
+```bash
+cd frontend
+npm run build
+npm run lint
+```
+
+Backend:
+
+```bash
+cd backend
+uvicorn main:app --reload
+```
+
+Then verify these manually:
+
+- Landing page loads correctly
+- `/team` loads team members
+- Team member detail panel opens and closes correctly
+- Deployed API/proxy assumptions have not been hardcoded back to localhost
+
+### Contribution guidelines
+
+- Keep UI changes responsive for both desktop and mobile
+- Preserve the existing visual style unless the task explicitly changes design
+- Prefer small, targeted commits
+- Do not commit large binary assets unless they are necessary and safe for Git hosting
+- Keep deployment-related URLs and environment-variable usage consistent with this README
 
 ## Future improvements
 
